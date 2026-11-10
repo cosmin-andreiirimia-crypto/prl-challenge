@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRL Challenge</title>
+<style>
+:root{--bg:#10132b;--panel:#1c2145;--panel2:#262d59;--text:#f7f7ff;--muted:#b8bddb;--accent:#8b7cff;--green:#20c997;--red:#ff647c;--yellow:#ffd166}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 15% 10%,#34306e 0,transparent 32%),radial-gradient(circle at 90% 90%,#173e60 0,transparent 30%),var(--bg);font-family:Inter,system-ui,Segoe UI,sans-serif;color:var(--text);display:flex;justify-content:center;padding:24px}
+.app{width:min(1050px,100%)}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.brand{font-weight:900;letter-spacing:1px;font-size:18px}.brand span{color:var(--yellow)}.pill{background:#ffffff14;border:1px solid #ffffff22;padding:8px 13px;border-radius:30px;color:var(--muted);font-size:13px}
+.screen{display:none}.screen.active{display:block}.hero{text-align:center;padding:38px 20px 26px}.logo{font-size:64px;margin-bottom:8px}.eyebrow{color:var(--yellow);font-weight:800;letter-spacing:2px;font-size:12px}.hero h1{font-size:clamp(38px,7vw,68px);margin:8px 0;line-height:1}.hero p{color:var(--muted);font-size:17px;max-width:600px;margin:15px auto 25px}
+.panel{background:linear-gradient(145deg,#242a55,#191e40);border:1px solid #ffffff18;border-radius:24px;padding:26px;box-shadow:0 18px 55px #0004}
+.setup{max-width:700px;margin:auto}.field{margin:18px 0}.field label{display:block;font-weight:700;margin-bottom:9px}.field input,.field select{width:100%;background:#111632;border:1px solid #ffffff2b;color:white;padding:13px 15px;border-radius:12px;font-size:16px;outline:none}.teams{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.team-input{display:flex;gap:9px;align-items:center}.team-input b{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:#ffffff18}
+button{border:0;border-radius:13px;padding:14px 20px;font-size:15px;font-weight:800;cursor:pointer;transition:.15s}button:hover{transform:translateY(-2px);filter:brightness(1.08)}button:disabled{opacity:.4;cursor:not-allowed;transform:none}.primary{background:linear-gradient(135deg,#9485ff,#6655df);color:white;width:100%;margin-top:12px}.secondary{background:#ffffff17;color:white;border:1px solid #ffffff25}.small{padding:10px 14px;font-size:13px}
+.game-head{display:flex;gap:12px;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap}.progress-wrap{height:9px;background:#ffffff18;border-radius:20px;overflow:hidden;margin:10px 0 22px}.progress{height:100%;background:linear-gradient(90deg,#8b7cff,#20c997);width:0%;transition:.3s}
+.question-card{padding:clamp(22px,4vw,38px);text-align:center}.category{color:var(--yellow);font-size:12px;font-weight:900;letter-spacing:1.7px}.qnum{color:var(--muted);font-size:13px}.question{font-size:clamp(23px,4vw,36px);font-weight:850;line-height:1.2;margin:17px auto 28px;max-width:850px}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:13px}.answer{min-height:84px;text-align:left;color:white;display:flex;align-items:center;gap:13px;padding:16px;background:#ffffff10;border:2px solid #ffffff12;border-radius:16px;font-size:16px;line-height:1.3}.answer .letter{flex:0 0 34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#ffffff20;font-weight:900}.answer:nth-child(1) .letter{background:#e95b79}.answer:nth-child(2) .letter{background:#397fe8}.answer:nth-child(3) .letter{background:#d89a27}.answer:nth-child(4) .letter{background:#19a77d}.answer:hover:not(:disabled){border-color:#a99fff;background:#ffffff19}.answer.correct{border-color:var(--green);background:#20c99726}.answer.wrong{border-color:var(--red);background:#ff647c20}
+.feedback{display:none;margin-top:20px;padding:18px;border-radius:15px;text-align:left;background:#ffffff0d;border:1px solid #ffffff20}.feedback.show{display:block}.feedback h3{margin:0 0 7px}.feedback p{margin:0;color:#d5d8ed;line-height:1.5}.feedback.good h3{color:var(--green)}.feedback.bad h3{color:var(--red)}
+.actions{display:flex;gap:10px;margin-top:18px;justify-content:flex-end}.scoreboard{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:15px 0}.score{background:#ffffff10;border:1px solid #ffffff17;border-radius:14px;padding:12px;text-align:center}.score .name{font-size:12px;color:var(--muted);overflow-wrap:anywhere}.score .points{font-size:26px;font-weight:900;margin-top:3px}.score.active-team{border-color:var(--yellow);background:#ffd16618}
+.turn{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px;flex-wrap:wrap}.turn strong{color:var(--yellow)}.leader{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;background:#ffffff0d;border-radius:13px;margin:9px 0}.leader:first-child{border:1px solid #ffd16688}.rank{font-size:22px;margin-right:12px}.final-title{text-align:center;font-size:clamp(35px,6vw,55px);margin:10px}.winner{text-align:center;font-size:20px;color:var(--yellow);margin-bottom:22px}.muted{color:var(--muted)}.foot{text-align:center;color:#858bad;font-size:12px;margin-top:20px}
+@media(max-width:650px){body{padding:13px}.answers{grid-template-columns:1fr}.scoreboard{grid-template-columns:repeat(2,1fr)}.panel{padding:18px}.teams{grid-template-columns:1fr}.top{margin-bottom:8px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top"><div class="brand">⚡ PRL <span>CHALLENGE</span></div><div class="pill">IPO I · Prevenció de riscos laborals</div></div>
+
+  <section id="setup" class="screen active">
+    <div class="hero"><div class="logo">🦺</div><div class="eyebrow">PREPARATS PER AL REPTE?</div><h1>PRL CHALLENGE</h1><p>16 proves. 4 blocs. Un equip guanyador. Demostra que saps actuar davant dels riscos laborals!</p></div>
+    <div class="panel setup">
+      <div class="field"><label for="playerName">Nom del jugador (opcional)</label><input id="playerName" value="Jugador" maxlength="22" placeholder="Escriu el teu nom"></div>
+      <button class="primary" id="startBtn">COMENÇAR EL JOC →</button>
+      <p class="muted" style="font-size:12px;text-align:center;margin:14px 0 0">Cada resposta correcta suma 1 punt. No hi ha penalització per error.</p>
+    </div>
+  </section>
+
+  <section id="play" class="screen">
+    <div class="game-head"><div class="pill" id="blockPill">BLOC 1</div><div class="pill" id="progressText">Pregunta 1 de 16</div></div>
+    <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+    <div class="panel">
+      <div class="turn"><div id="turnText">Jugador: <strong>Jugador</strong></div><div class="pill" id="pointsText">0 punts</div></div>
+      <div class="question-card">
+        <div class="category" id="category">SENYALITZACIÓ DE SEGURETAT</div>
+        <div class="qnum" id="qnum">PREGUNTA 01</div>
+        <div class="question" id="question"></div>
+        <div class="answers" id="answers"></div>
+        <div class="feedback" id="feedback"><h3 id="feedbackTitle"></h3><p id="feedbackText"></p></div>
+        <div class="actions"><button class="secondary" id="skipBtn">Saltar pregunta</button><button class="primary" id="nextBtn" style="width:auto;min-width:170px" disabled>Continuar →</button></div>
+      </div>
+    </div>
+    <div class="foot">PRL CHALLENGE · Aprendre a prevenir també és jugar bé</div>
+  </section>
+
+  <section id="end" class="screen">
+    <div class="hero"><div class="logo">🏆</div><div class="eyebrow">REPTE COMPLETAT</div><h1 class="final-title">GRAN TREBALL!</h1><div class="winner" id="winnerText"></div></div>
+    <div class="panel setup"><h2 style="margin-top:0">Classificació final</h2><div id="finalScores"></div><button class="primary" id="restartBtn">TORNAR A JUGAR ↻</button></div>
+  </section>
+</div>
+<script>
+const questions = [
+{b:0,cat:"SENYALITZACIÓ DE SEGURETAT",q:"En un magatzem circulen transpalets i es descarreguen mercaderies. Quina senyal col·locaries?",a:["Risc elèctric","Advertència de vehicles de manutenció","Material corrosiu","Sortida d'emergència"],c:1,e:"Cal una senyal d'advertència de vehicles de manutenció. També s'han de separar les zones de circulació de persones i transpalets."},
+{b:0,cat:"SENYALITZACIÓ DE SEGURETAT",q:"En una botiga s'utilitzen productes que poden irritar la pell i els ulls. Quina senyal correspon?",a:["Producte irritant o nociu","Material inflamable","Prohibit fumar","Risc de caiguda"],c:0,e:"Correspon la senyal de perill de producte irritant. Cal utilitzar guants i ulleres de protecció i seguir les instruccions del producte."},
+{b:0,cat:"SENYALITZACIÓ DE SEGURETAT",q:"En un magatzem hi ha productes inflamables i només pot entrar personal autoritzat. Quines senyals calen?",a:["Només sortida d'emergència","Risc elèctric i obligació de casc","Material inflamable i prohibició d'accés a no autoritzats","Terra relliscós i primers auxilis"],c:2,e:"Són necessàries la senyal de material inflamable i la de prohibició d'accés a persones no autoritzades."},
+{b:0,cat:"SENYALITZACIÓ DE SEGURETAT",q:"Hi ha caixes que dificulten l'accés a una sortida d'emergència. Quina actuació és correcta?",a:["Posar més caixes al costat","Col·locar una senyal de perill","Deixar-ho així si la porta obri","Mantenir senyalitzada la sortida i retirar les caixes"],c:3,e:"La sortida ha d'estar ben senyalitzada i l'accés completament lliure. Cal retirar immediatament les caixes."},
+{b:1,cat:"VALORACIÓ DE RISCOS LABORALS",q:"Un treballador utilitza una escala trencada per agafar productes. Quina valoració és correcta?",a:["Probabilitat baixa, gravetat lleu, risc trivial","Probabilitat alta, gravetat extremadament nociva, risc intolerable","Probabilitat mitjana, gravetat lleu, risc tolerable","No existeix cap risc"],c:1,e:"La caiguda és probable i pot provocar lesions molt greus. Nivell orientatiu: intolerable (IN). Cal substituir l'escala per una de segura."},
+{b:1,cat:"VALORACIÓ DE RISCOS LABORALS",q:"En un supermercat hi ha una zona mullada i hi passen clients contínuament. Com valores el risc?",a:["Probabilitat mitjana, gravetat nociva, moderat","Probabilitat baixa, gravetat lleu, trivial","Probabilitat alta, gravetat lleu, tolerable","No és un risc laboral"],c:0,e:"Hi ha risc de relliscada. Valoració orientativa: probabilitat mitjana, gravetat nociva i nivell moderat (MO). Cal netejar i senyalitzar."},
+{b:1,cat:"VALORACIÓ DE RISCOS LABORALS",q:"Un treballador aixeca caixes molt pesades amb una postura incorrecta. Quin risc pot patir?",a:["Cremades","Intoxicació","Lesions musculars i d'esquena","Pèrdua d'audició"],c:2,e:"Pot patir lesions musculoesquelètiques, especialment a l'esquena. Cal adoptar una postura correcta i utilitzar ajudes mecàniques."},
+{b:1,cat:"VALORACIÓ DE RISCOS LABORALS",q:"Hi ha cables elèctrics pel mig del passadís d'una botiga. Quina és la millor solució?",a:["Tapar-los amb una caixa","Deixar-los perquè es veuen","Posar-hi una catifa qualsevol","Retirar-los del pas o protegir-los adequadament"],c:3,e:"Poden provocar ensopegades i caigudes. Valoració orientativa: probabilitat mitjana, gravetat nociva i risc moderat (MO)."},
+{b:2,cat:"TRIATGE EN EMERGÈNCIES",q:"Després d'un accident, una persona pot caminar i només té ferides superficials. Quin color li correspon?",a:["Roig","Verd","Negre","Groc"],c:1,e:"Verd: víctima amb lesions lleus que pot caminar i no necessita atenció immediata."},
+{b:2,cat:"TRIATGE EN EMERGÈNCIES",q:"Una persona està inconscient i té dificultats greus per respirar. Quin color li correspon?",a:["Verd","Groc","Roig","Negre"],c:2,e:"Roig: situació molt greu que necessita atenció immediata perquè la vida està en perill."},
+{b:2,cat:"TRIATGE EN EMERGÈNCIES",q:"Una persona presenta una hemorràgia important, però continua conscient. Quin color li correspon?",a:["Roig","Verd","Negre","Blau"],c:0,e:"Roig: una hemorràgia important pot posar en perill la vida i requereix atenció immediata."},
+{b:2,cat:"TRIATGE EN EMERGÈNCIES",q:"Una víctima no presenta signes de vida i no és recuperable segons els criteris del triatge. Quin color?",a:["Groc","Verd","Roig","Negre"],c:3,e:"Negre: s'utilitza per identificar una víctima sense signes de vida o no recuperable segons els criteris del triatge aplicat."},
+{b:3,cat:"CONDUCTA PAS",q:"Un treballador cau al costat d'una màquina que continua funcionant. Quina és la primera actuació?",a:["Donar-li aigua","Protegir: aturar la màquina si és segur i assegurar la zona","Moure'l immediatament","Marxar a buscar ajuda sense valorar el perill"],c:1,e:"La primera fase és PROTEGIR. Cal aturar la màquina només si es pot fer sense risc i assegurar la zona abans d'acostar-s'hi."},
+{b:3,cat:"CONDUCTA PAS",q:"Es produeix un incendi al magatzem i hi ha treballadors a prop. Com apliques PAS?",a:["Socórrer, protegir i avisar","Avisar, marxar i tornar","Protegir, avisar i socórrer","Esperar que s'apague"],c:2,e:"Primer PROTEGIR les persones i la zona; després AVISAR els serveis d'emergència (112); finalment SOCÓRRER sense assumir riscos."},
+{b:3,cat:"CONDUCTA PAS",q:"Un client cau a terra i sembla que s'ha fet mal. Què significa PAS i quin és l'ordre?",a:["Prevenir, ajudar, salvar","Protegir, avisar, socórrer","Parar, actuar, sortir","Protegir, socórrer, avisar"],c:1,e:"PAS significa Protegir, Avisar i Socórrer. Primer assegurem la zona, després telefonem al 112 si cal i finalment ajudem la víctima."},
+{b:3,cat:"CONDUCTA PAS",q:"Trobes un treballador inconscient a terra. Quina actuació és correcta?",a:["Donar-li menjar o beguda","Moure'l ràpidament sense valorar-lo","Deixar-lo sol","Comprovar que la zona és segura, avisar el 112 i valorar la víctima"],c:3,e:"Cal protegir, avisar el 112 i valorar la víctima. No s'ha de moure innecessàriament ni donar-li menjar o beguda."}
+];
+const blockNames=["BLOC 1 · SENYALITZACIÓ","BLOC 2 · VALORACIÓ DE RISCOS","BLOC 3 · TRIATGE","BLOC 4 · CONDUCTA PAS"];
+const letters=["A","B","C","D"];
+let idx=0,score=0,answered=false,player="Jugador";
+const $=id=>document.getElementById(id);
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$(id).classList.add("active")}
+$("startBtn").onclick=()=>{player=$("playerName").value.trim()||"Jugador";idx=0;score=0;show("play");render()};
+function render(){
+ answered=false;let q=questions[idx];$("blockPill").textContent=blockNames[q.b];$("progressText").textContent=`Pregunta ${idx+1} de 16`;$("progress").style.width=(idx/16*100)+"%";$("category").textContent=q.cat;$("qnum").textContent=`PREGUNTA ${String(idx+1).padStart(2,"0")}`;$("question").textContent=q.q;$("feedback").className="feedback";$("nextBtn").disabled=true;$("nextBtn").textContent=idx===15?"Veure resultats →":"Continuar →";$("turnText").innerHTML=`Jugador: <strong>${player}</strong>`;$("pointsText").textContent=`${score} ${score===1?"punt":"punts"}`;
+ $("answers").innerHTML="";q.a.forEach((a,i)=>{let b=document.createElement("button");b.className="answer";b.innerHTML=`<span class="letter">${letters[i]}</span><span>${a}</span>`;b.onclick=()=>choose(i,b);$("answers").appendChild(b)});
+}
+function choose(i,btn){
+ if(answered)return;answered=true;let q=questions[idx],correct=i===q.c;let all=[...$("answers").children];all.forEach((b,j)=>{b.disabled=true;if(j===q.c)b.classList.add("correct")});if(!correct)btn.classList.add("wrong");
+ if(correct){score++;$("feedbackTitle").textContent="✓ Correcte! +1 punt";$("feedback").className="feedback show good"}else{$("feedbackTitle").textContent="✕ No és correcte";$("feedback").className="feedback show bad"}
+ $("feedbackText").textContent=q.e;$("pointsText").textContent=`${score} ${score===1?"punt":"punts"}`;$("nextBtn").disabled=false;
+}
+$("nextBtn").onclick=()=>{if(idx===15){finish();return}idx++;render()};
+$("skipBtn").onclick=()=>{if(answered)return;answered=true;let q=questions[idx];[...$("answers").children].forEach((b,j)=>{b.disabled=true;if(j===q.c)b.classList.add("correct")});$("feedbackTitle").textContent="Resposta correcta";$("feedback").className="feedback show";$("feedbackText").textContent=q.e;$("nextBtn").disabled=false};
+function finish(){
+ $("winnerText").textContent=`${player}, has aconseguit ${score} de 16 punts!`;
+ let msg=score>=14?"Excel·lent! Domines la prevenció de riscos.":score>=10?"Molt bé! Tens una bona base de PRL.":score>=6?"Bona feina! Repasa les preguntes que t'han costat.":"Continua practicant: la prevenció s'aprèn!";
+ $("finalScores").innerHTML=`<div class="leader"><strong>${msg}</strong><strong>${Math.round(score/16*100)}%</strong></div><div class="leader"><span>Respostes correctes</span><strong>${score} / 16</strong></div><div class="leader"><span>Respostes incorrectes o sense respondre</span><strong>${16-score} / 16</strong></div>`;
+ $("progress").style.width="100%";show("end")
+}
+$("restartBtn").onclick=()=>{show("setup")};
+</script>
+</body>
+</html>
